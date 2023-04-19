@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="Madu Munoz" />
+        <meta name="description" content="Portafolio de diseño integral wow que pro" />
+        <link href="style.css" rel="stylesheet" />
+        <title>Portafolio Madu Muñoz</title>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <h1><a href="index.html">Madu Muñoz</a></h1>
+                <select name="select" id="opciones">
+                    <option>Todos los trabajos</option>
+                    <option value="marca">Diseño de marca</option>
+                    <option value="informacion">Diseño de información</option>
+                    <option value="grafico">Diseño gráfico</option>
+                </select> <!--select es la función que define el boton que despliega las opciones-->
+            </header>
+            <main>
+                <section></section>
+            </main>
+            <footer>
+                <p><a href="https://github.com/MaduMunoz">Madu Muñoz</a> <a href="https://github.com/profesorfaco/dno037-2023">DNO037</a></p>
+            </footer>
+        </div>
+        <!--Primero vamos a buscar la versión más reciente de jQuery-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!--Y ahora podemos usarla-->
+        <script>
+            $(function () { //cuando se carga la página corre esto
+
+                //jquery usa el signo $ para referirse a dónde va a actuar. Significa acción. 
+
+                $.getJSON("https://raw.githubusercontent.com/MaduMunoz/DNMedios-clase07/main/datos.json", function (data) { 
+                    console.log(data); //muestra la data del json en la consola
+                    
+                    //un forEach para mostrar todos los trabajos
+                    data.forEach(function (t, i) {
+                        $("section").append( // anda a section (linea 23, que está vacio) y métele esto a esa caja vacia. Por cada elemento anda a section y añade esta info. Append es añade. 
+                            '<article class="' + t.soporte + '"><img src="' + t.fotos[0] + '"><h2><a href="single.html?nro=' + i + '">' + t.nombre + "</a></h2><p>" + t.abstract + "</p><small>#" + t.soporte + "</small></article>"
+                        );
+                    });
+                    
+                    //una función para interactuar con el menú
+                    var valor;
+                    $("#opciones").change(function () { //agarra la identidad funciones, y cuando cambie ejecuta esta función. 
+                        valor = $("select").val(); //dame el valor del select
+
+                        //lo que hacen esto es que si selecciono 1 de los soportes, el soporte que selecciono fade to 1 (sin opacidad) y el resto fades to 0.1 (con baja opacidad). 
+
+                        if (valor == "marca") {
+                            $(".marca").fadeTo("slow", 1);
+                            $(".informacion, .grafico").fadeTo("slow", 0.1);
+
+                        } else if (valor == "informacion") {
+                            $(".informacion").fadeTo("slow", 1);
+                            $(".marca, .grafico").fadeTo("slow", 0.1);
+
+                        } else if (valor == "grafico") {
+                            $(".grafico").fadeTo("slow", 1);
+                            $(".marca, .informacion").fadeTo("slow", 0.1);
+
+                        } else {
+                            $(".marca, .informacion, .grafico").fadeTo("slow", 1);
+                        }
+                    });
+                }); // cierro $.getJSON((){});
+            }); //cierro $(function(){});
+        </script>
+    </body>
+</html>
